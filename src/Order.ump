@@ -1,0 +1,43 @@
+namespace com.ji.Entity;
+use Order.ump;
+use OrderDetail.ump;
+use Address.ump;
+external ActionForm{};
+class Order{
+  depend javax.servlet.http.*;
+
+  depend org.apache.struts.action.*;
+  isA ActionForm;
+
+
+  int id = 0;
+  orderNumber = "";
+  paymentMethod = "";//1 -- 1 PaymentMethod
+  shipmentMethod = "";//1--1 ShipmentMethod
+   message = "";
+  Date datePlaced =null;
+  Date datePayment=null;
+ 
+  Date shipped = null;
+  
+  Date delivered = null;
+  
+ 
+  0..1 -- * OrderDetail;
+ 
+  Address address = null;
+  status{
+        NotPaid{
+            makePayment -> paid; 
+        }
+        paid{
+            ship -> shipped;
+        }
+        shipped{
+            confirmedDelivery-> delivered;
+        }
+        delivered{
+        }    
+    }
+  
+}

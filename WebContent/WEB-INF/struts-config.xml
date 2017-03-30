@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+  <form-beans>
+    <form-bean name="managerForm" type="com.ji.Entity.Manager" />
+    <form-bean name="bigTypeForm" type="com.ji.Entity.Type" />
+    <form-bean name="smallTypeForm" type="com.ji.Entity.Brand" />
+    <form-bean name="goodsForm" type="com.ji.Entity.Goods" />
+    <form-bean name="memberForm" type="com.ji.Entity.Member" />
+    <form-bean name="addressForm" type="com.ji.Entity.Address" />
+    <form-bean name="orderForm" type="com.ji.Entity.Order" />
+    <form-bean name="orderDetailForm" type="com.ji.Entity.OrderDetail" />
+  </form-beans>
+  <action-mappings>
+
+
+
+    <!-- 商品小类别处理 -->
+    <action name="goodsForm" path="/goodsAction" scope="request" type="com.ji.Action.GoodsAction" validate="true">
+           <!-- 后台处理 -->
+      <forward name="goodSelect" path="/bg-goodSelect.jsp" />      
+      <forward name="selectContent" path="/bg-goodSelectContent.jsp" />
+      <forward name="goodsOperation" path="/bg-goodsResult.jsp" />
+      <forward name="goodForward" path="/bg-goodInsert.jsp" />
+      <forward name="managerSalePirce" path="/bg-goodsSalePirce.jsp" />
+      <forward name="goodSelectMark" path="/bg-goodsMarkSelect.jsp" />
+      <forward name="goodSelectBig" path="/bg-goodSelectBig.jsp" />
+      <forward name="goodSelectSmall" path="/bg-goodSelectSmall.jsp" />
+ <!-- 前台处理 -->
+      <forward name="goodSelectBigHead" path="/fg-selectBigGoods.jsp" />
+      <forward name="goodSelectFreeHead" path="/fg-selectFreeGoods.jsp" />
+      <forward name="goodSelectNewHead" path="/fg-selectNewGoods.jsp" />
+      <forward name="goodSelectOneHead" path="/fg-goodSelectOne.jsp" />
+    </action>    
+    <!-- 商品小类别处理 -->
+    <action name="smallTypeForm" path="/smallTypeAction" scope="request" type="com.ji.Action.BrandAction" validate="true">
+      <forward name="smallTypeSelect" path="/bg-smallTypeSelect.jsp" />
+      <forward name="smallTypeOperation" path="/bg-smallTypeResult.jsp" />     
+    </action>
+     <!-- 商品大类别处理 -->
+    <action name="bigTypeForm" path="/bigTypeAction" scope="request" type="com.ji.Action.TypeAction" validate="true">
+      <forward name="bigTypeSelect" path="/bg-bigTypeSelect.jsp" />
+      <forward name="resultBigType" path="/bg-bigTypeResult.jsp" />
+    </action>
+     <!-- 管理员处理 -->
+    <action name="managerForm" path="/managerAction" scope="request" type="com.ji.Action.ManagerAction" validate="true">
+      <forward name="managerSelect" path="/bg-managerSelect.jsp" />
+      <forward name="managerInsert" path="/bg-managerInsert.jsp" />      
+      <forward name="checkResult" path="/bg-landResult.jsp" />    
+     
+    </action> 
+    <!-- 会员处理 -->
+    <action name="memberForm" path="/memberAction" scope="request" type="com.ji.Action.MemberAction" validate="true">
+      <forward name="operationMember" path="/bg-memberSuccess.jsp" />
+      <forward name="checkMember" path="/fg-checkMemberResult.jsp" />
+      <forward name="selectOneMemberHead" path="/fg-updateMember.jsp" />
+      <forward name="selectMember" path="/bg-selectMember.jsp" />
+      <forward name="selectOneMember" path="/bg-selectContent.jsp" />
+      <forward name="deleteMember" path="/bg-resultMember.jsp" />
+    </action>
+    <!-- 订单处理 -->
+    <action name="orderForm" path="/orderAction" scope="request" type="com.ji.Action.OrderAction" validate="true">
+      <forward name="selectOrder" path="/bg-orderSelect.jsp" />
+      <forward name="selectOneOrder" path="/bg-orderContent.jsp" />
+    </action> 
+  </action-mappings>
+  
+  <controller processorClass="com.ji.tool.SelfRequestProcessor" />
+  
+</struts-config>

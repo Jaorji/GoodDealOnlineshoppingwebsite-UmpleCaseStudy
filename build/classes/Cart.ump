@@ -1,0 +1,8 @@
+namespace com.ji.Entity;
+
+class Cart{
+  int id = 0;
+  Double price = 0.0;
+  int number = 0;
+
+}

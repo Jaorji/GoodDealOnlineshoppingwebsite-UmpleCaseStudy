@@ -1,0 +1,12 @@
+
+namespace com.ji.Entity;
+use User.ump;
+
+class Manager{
+  depend org.apache.struts.action.*;
+  depend javax.servlet.http.HttpServletRequest;
+  isA User;
+   
+  accountName = "";
+  int ifAdmin = 0;
+}

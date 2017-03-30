@@ -1,0 +1,33 @@
+namespace com.ji.Entity;
+
+external ActionForm{};
+class Goods{
+  depend org.apache.struts.action.ActionForm;
+  depend org.apache.struts.action.ActionErrors;
+  depend org.apache.struts.action.ActionMapping;
+  depend org.apache.struts.upload.FormFile;
+
+
+  depend javax.servlet.http.HttpServletRequest;
+  isA ActionForm;
+  int id = 0;
+  name = "";
+  description ="";
+  Double price = 0.0;
+  Integer numberInInventory = 0;
+  String picture = ""; 
+ 
+  int mark = 0;
+  Double salePrice = 0.0;
+  manufacturer = "";
+  status{
+        NotSale{
+            changePrice -> sale; 
+        }
+        sale{
+           backToOriginalPrice ->NotSale;
+        }
+        
+    }
+  FormFile formFile = null;
+}

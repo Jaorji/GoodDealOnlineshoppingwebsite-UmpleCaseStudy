@@ -1,0 +1,96 @@
+namespace com.ji.Action;
+
+use Type.ump;
+use TypeDao.ump;
+
+external Action{}
+class TypeAction{
+depend org.apache.struts.action.ActionMapping;
+depend org.apache.struts.action.ActionForm;
+depend javax.servlet.http.HttpServletRequest;
+depend javax.servlet.http.HttpServletResponse;
+depend org.apache.struts.action.ActionForward;
+depend org.apache.struts.action.Action;
+depend java.util.List;
+
+isA Action;
+
+0..1 -> 1 TypeDao dao;
+0..1 -> 1 Type type;
+       int action;
+       public TypeAction(){}
+       public ActionForward execute(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+    dao = new TypeDao();
+    this.action = Integer.parseInt(request.getParameter("action"));
+    switch (action) {
+      case 0: {
+        return bigTypeSelect(mapping, form, request, response); 
+      }
+      case 2: {
+        return bigTypeInsert(mapping, form, request, response); 
+      }
+      case 3: {
+        return bigTypeDelete(mapping, form, request, response); 
+      }
+    }
+
+    throw new java.lang.UnsupportedOperationException(
+        "Method $execute() not yet implemented.");
+  }
+
+
+  public ActionForward bigTypeDelete(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    if (dao.deleteBig(Integer.valueOf(request.getParameter("id")))) {
+      request.setAttribute("result", "Delete Type");
+    }
+    else {
+      request.setAttribute("result", "Сon not delete type");
+    }
+
+    return mapping.findForward("resultBigType");
+  }
+
+  
+  
+  public ActionForward bigTypeInsert(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    dao.insertBig(request.getParameter("name"));
+    request.setAttribute("result", "Insert type");
+    return mapping.findForward("resultBigType");
+  }
+
+
+
+  public ActionForward bigTypeSelect(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    List<Type> list = dao.selectBig();
+    int pageNumber = list.size(); 
+    int maxPage = pageNumber;
+    String number = request.getParameter("i");
+    if (maxPage % 6 == 0) {
+      maxPage = maxPage / 6;
+    }
+    else {
+      maxPage = maxPage / 6 + 1;
+    }
+    if (number == null) {
+      number = "0";
+    }
+    request.setAttribute("number", String.valueOf(number));
+    request.setAttribute("maxPage", String.valueOf(maxPage));
+    request.setAttribute("pageNumber", String.valueOf(pageNumber));
+    request.setAttribute("list", list);
+    return mapping.findForward("bigTypeSelect");
+  }
+       
+}

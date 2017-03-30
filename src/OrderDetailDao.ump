@@ -1,0 +1,81 @@
+namespace com.ji.DAO;
+
+use OrderDetail.ump;
+use JDBConnection.ump;
+use Goods.ump;
+use GoodsDao.ump;
+class OrderDetailDao{
+depend java.sql.*;
+depend java.util.*;
+
+0..1 -> 1 JDBConnection jdbc;
+0..1 -> 1 OrderDetail orderDetail;
+
+PreparedStatement ps;
+Connection connection;
+public OrderDetailDao() {
+    jdbc = new JDBConnection(connection);
+    connection = jdbc.getConnection();
+  }
+  public List<OrderDetail> selectOrderDetailNumber(String number){
+  List<OrderDetail> list =new ArrayList<OrderDetail>();
+  OrderDetail orderDetail=null;
+  Member member=new Member();
+  Address address=new Address();
+     Goods goodsForm= new Goods();
+      GoodsDao goodsDao= new GoodsDao();
+  try {
+    ps = connection.prepareStatement("select * from db_orderDetail where orderNumber=?");
+    ps.setString(1,number);
+    ResultSet rs=ps.executeQuery();
+    while(rs.next()){
+      orderDetail=new OrderDetail();
+      orderDetail.setId(Integer.valueOf(rs.getString(1)));
+      orderDetail.setOrderNumber(rs.getString(2));
+      orderDetail.setPrice(Double.parseDouble(rs.getString(3)));
+      orderDetail.setQuantity(Integer.parseInt(rs.getString(4)));
+   
+      goodsForm = goodsDao.selectOneGoods(Integer.parseInt(rs.getString(5)));
+      orderDetail.addGood(goodsForm);
+      list.add(orderDetail);
+    }
+  }
+  catch (SQLException ex) {
+	  ex.printStackTrace();
+  }
+    return list;
+}
+
+
+  public void insertOrderDetail(OrderDetail form) {
+    try {
+      ps = connection.prepareStatement("insert into db_orderDetail values (null,?,?,?,?,?)");
+      ps.setString(1, form.getOrderNumber());
+      ps.setDouble(2, form.getPrice());
+      ps.setInt(3, form.getQuantity());
+     for(int i=0;i<form.getGoods().size();i++){
+      ps.setInt(4, form.getGood(i).getId());}
+      ps.setInt(5, form.getOrder().getId());
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+
+  public void deleteOrderDetail(String number){
+    try {
+      ps = connection.prepareStatement("delete from db_orderDetail where orderNumber=?");
+      ps.setString(1,number);
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+
+
+  }
+  
+}

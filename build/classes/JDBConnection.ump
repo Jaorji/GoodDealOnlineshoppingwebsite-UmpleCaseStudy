@@ -1,0 +1,18 @@
+namespace com.ji.tool;
+
+class JDBConnection{
+depend java.sql.*;
+
+
+
+   Connection connection;
+	after constructor{ 
+		try {
+		    
+			Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+		    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_gooddeal", "root", ""); 
+		} catch (Exception ex) {
+			System.out.println("connection fail!");
+		}
+	}
+}

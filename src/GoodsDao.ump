@@ -1,0 +1,316 @@
+namespace com.ji.DAO;
+
+use JDBConnection.ump;
+use Goods.ump;
+class GoodsDao{
+depend java.sql.*;
+depend java.util.*;
+
+0..1 -> 1 JDBConnection jdbc;
+0..1 -> 1 Goods goodsForm;
+
+PreparedStatement ps;
+Connection connection;
+public GoodsDao() {
+    jdbc = new JDBConnection(connection);
+    connection = jdbc.getConnection();
+  }
+
+  public void updateGoodsNumber(int number, Integer id) {
+    try {
+      ps = connection.prepareStatement("update db_goods set numberInInventory=numberInInventory-? where id=?");
+      ps.setInt(1, number);
+      ps.setInt(2, id.intValue());
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+
+  }
+
+  public void managerPrice(Goods form) {
+    try {
+      ps = connection.prepareStatement("update db_goods set salePrice=?,status=? where id=?");
+      ps.setDouble(1,(double) form.getSalePrice());
+      ps.setString(2, String.valueOf(form.getStatus()));
+      ps.setInt(3, form.getId());
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+
+  public List<Goods> selectSale(String status) {
+    List<Goods> list = new ArrayList<Goods>();
+    Goods goods = null;
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+    try {
+      ps = connection.prepareStatement("select * from db_goods where status=? order by id DESC");
+      ps.setString(1, status);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        goods = new Goods();
+        goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+        goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+        list.add(goods);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+
+  public void insertGoods(Goods form) {
+    try {
+      ps = connection.prepareStatement("insert into db_goods values (null,?,?,?,?,?,?,?,?,?,?)");
+      ps.setString(1, form.getName());
+      ps.setString(2, form.getDescription());
+      ps.setDouble(3, (double)form.getPrice());
+      ps.setInt(4, form.getNumberInInventory());
+      ps.setString(5, form.getPicture());
+      ps.setDouble(6, (double)form.getSalePrice());
+      ps.setString(7,form.getManufacturer());
+      ps.setInt(8,form.getType().getId());
+      ps.setInt(9,form.getBrand().getId());
+      ps.setString(10,String.valueOf(form.getStatus()));
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+
+  public void deleteGoods(Integer id) {
+    try {
+      ps = connection.prepareStatement("delete from db_goods where id=?");
+      ps.setInt(1, id.intValue());
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+
+
+  public Goods selectOneGoods(Integer id) {
+    
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+	Goods goods = new Goods();
+    try {
+      ps = connection.prepareStatement("select * from db_goods where id=? order by id DESC");
+      ps.setInt(1, id.intValue());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {   
+      goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+       goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return goods;
+  }
+
+
+  public List<Goods> selectSmall(Integer small) {
+    List<Goods> list = new ArrayList<Goods>();
+    Goods goods = null;
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+    try {
+      ps = connection.prepareStatement("select * from db_goods where brandId=? order by id DESC");
+      ps.setInt(1, small.intValue());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        goods = new Goods();
+       goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+        goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+        list.add(goods);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+
+  public List<Goods> selectBig(Integer big) {
+    List<Goods> list = new ArrayList<Goods>();
+    Goods goods = null;
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+    try {
+      ps = connection.prepareStatement("select * from db_goods where typeId=? order by id DESC");
+      ps.setInt(1, big.intValue());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        goods = new Goods();
+        goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+        goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+        list.add(goods);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+
+
+  public List<Goods> selectGoods() {
+    List<Goods> list = new ArrayList<Goods>();
+    Goods goods = null;
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+    try {
+      ps = connection.prepareStatement("select * from db_goods order by id DESC");
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        goods = new Goods();
+         goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+         goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+        list.add(goods);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+
+ 
+  public List<Goods> selectGoodsNumber() {
+    List<Goods> list = new ArrayList<Goods>();
+    Goods goods = null;
+    Type type = new Type();
+    TypeDao typeDao = new TypeDao();
+	Brand brand = new Brand();
+	BrandDao brandDao = new BrandDao();
+    try {
+      ps = connection.prepareStatement("select * from db_goods order by numberInInventory DESC");
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        goods = new Goods();
+          goods.setId(Integer.valueOf(rs.getString(1)));
+        goods.setName(rs.getString(2));
+        goods.setDescription(rs.getString(3));
+        goods.setPrice(Double.valueOf(rs.getString(4))); 
+        goods.setNumberInInventory(Integer.valueOf(rs.getString(5)));
+        goods.setPicture(rs.getString(6));
+        goods.setSalePrice(Double.valueOf(rs.getString(7)));
+        goods.setManufacturer(rs.getString(8));
+        type = typeDao.selectOneType(Integer.valueOf(rs.getString(9)));
+        goods.setType(type);
+        brand = brandDao.selectOneBrand(Integer.valueOf(rs.getString(10)));
+        goods.setBrand(brand);
+        if(rs.getString(11).equals("sale")){
+        goods.changePrice();
+        }else{
+        goods.backToOriginalPrice();
+        }
+        list.add(goods);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+
+  
+}

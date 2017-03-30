@@ -1,0 +1,104 @@
+namespace com.ji.Action;
+
+use Order.ump;
+use OrderDao.ump;
+use OrderDetail.ump;
+use OrderDetailDao.ump;
+external Action{};
+
+class OrderAction{
+depend org.apache.struts.action.ActionMapping;
+depend org.apache.struts.action.ActionForm;
+depend javax.servlet.http.HttpServletRequest;
+depend javax.servlet.http.HttpServletResponse;
+depend org.apache.struts.action.ActionForward;
+depend org.apache.struts.action.Action;
+depend java.util.List;
+isA Action;
+0..1 -> 1 OrderDao orderDao;
+0..1 -> 1 Order order;
+0..1 -> 1 OrderDetailDao orderDetail;
+
+       int action;
+       public OrderAction(){}
+public ActionForward execute(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+    action = Integer.parseInt(request.getParameter("action"));
+    orderDao = new OrderDao();
+    orderDetail = new OrderDetailDao();
+    switch (action) {
+      case 0: {
+        return selectOrder(mapping, form, request, response); 
+      }
+      case 1: {
+        return selectOrderSend(mapping, form, request, response); 
+      }
+      case 2: {
+      return deleteOrder(mapping, form, request, response); 
+    }
+    case 3: {
+        return selectOneOrder(mapping, form, request, response); 
+      }
+
+    }
+    throw new java.lang.UnsupportedOperationException(
+        "Method $execute() not yet implemented.");
+  }
+
+  public ActionForward selectOneOrder(ActionMapping mapping,
+                                   ActionForm form,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) {
+ String number=request.getParameter("orderNumber");
+   request.setAttribute("orderForm",orderDao.selectOrderNumber(number));
+   request.setAttribute("orderDetailList",orderDetail.selectOrderDetailNumber(number));
+   return mapping.findForward("selectOneOrder");
+  }
+
+  public ActionForward deleteOrder(ActionMapping mapping,
+                                   ActionForm form,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) {
+    String number = (String) request.getParameter("orderNumber");
+    orderDetail.deleteOrderDetail(number);
+    orderDao.deleteOrder(number);
+    return selectOrder(mapping, form, request, response);
+   }
+
+
+  public ActionForward selectOrderSend(ActionMapping mapping,
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+    orderDao.updateStatusOrderShip(request.getParameter("orderNumber"));
+    return selectOrder(mapping, form, request, response);
+  }
+
+
+  public ActionForward selectOrder(ActionMapping mapping,
+                                   ActionForm form,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response) {
+   
+    List<Order> list = orderDao.selectOrderList();
+    int pageNumber = list.size(); 
+    int maxPage = pageNumber; 
+    String number = request.getParameter("i");
+    if (maxPage % 6 == 0) {
+      maxPage = maxPage / 6;
+    }
+    else {
+      maxPage = maxPage / 6 + 1;
+    }
+    if (number == null) {
+      number = "0";
+    }
+    request.setAttribute("number", String.valueOf(number));
+    request.setAttribute("maxPage", String.valueOf(maxPage));
+    request.setAttribute("pageNumber", String.valueOf(pageNumber));
+    request.setAttribute("list", list);
+    return mapping.findForward("selectOrder");
+  }
+}

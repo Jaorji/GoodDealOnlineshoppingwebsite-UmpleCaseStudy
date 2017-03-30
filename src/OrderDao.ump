@@ -1,0 +1,286 @@
+namespace com.ji.DAO;
+
+use JDBConnection.ump;
+use Order.ump;
+class OrderDao{
+
+depend java.sql.*;
+depend java.util.*;
+
+0..1 -> 1 JDBConnection jdbc;
+0..1 -> 1 Order order;
+
+PreparedStatement ps;
+Connection connection;
+public OrderDao() {
+    jdbc = new JDBConnection(connection);
+    connection = jdbc.getConnection();
+  }
+   public List<Order> selectOrderHead(Integer id) {
+  List<Order> list=new ArrayList<Order>();
+    Order order = null;
+     Member memberForm = new Member();
+       MemberDao memberDao = new MemberDao();
+       Address addressForm= new Address();
+        AddressDao addressDao = new AddressDao();
+   try {
+     ps = connection.prepareStatement("select * from db_order where memberId=?");
+     ps.setInt(1, id);
+     ResultSet rs = ps.executeQuery();
+     while (rs.next()) {
+       order = new Order();
+       order.setId(Integer.valueOf(rs.getString(1)));
+       order.setOrderNumber(rs.getString(2));
+       order.setPaymentMethod(rs.getString(3));
+       order.setShipmentMethod(rs.getString(4));
+       order.setMessage(rs.getString(5));
+        
+       addressForm = addressDao.selectOneAddress(Integer.valueOf(rs.getString(6)));
+       order.setAddress(addressForm);
+      
+       memberForm = memberDao.selectOneMember(Integer.valueOf(rs.getString(7)));
+       order.setMember(memberForm);
+       if (rs.getString(8).equals("paid")){
+    	   
+    	   order.makePayment();
+    	  
+       }else if(rs.getString(8).equals("shipped")){
+           order.makePayment();
+    	   order.ship();
+       }
+       else if(rs.getString(8).equals("delivered")){
+         order.makePayment();
+    	   order.ship();
+    	   order.confirmedDelivery();
+       }
+       list.add(order);
+
+     }
+   }
+   catch (SQLException ex) {
+	   ex.printStackTrace();
+   }
+   return list;
+ }
+
+
+
+  public Order selectOrderNumber(String number) {
+
+    Order order = null;
+    Member memberForm = new Member();
+       MemberDao memberDao = new MemberDao();
+        Address addressForm= new Address();
+        AddressDao addressDao = new AddressDao();
+    try {
+      ps = connection.prepareStatement("select * from db_order where orderNumber=?");
+      ps.setString(1, number);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        order = new Order();
+      order.setId(Integer.valueOf(rs.getString(1)));
+       order.setOrderNumber(rs.getString(2));
+       order.setPaymentMethod(rs.getString(3));
+       order.setShipmentMethod(rs.getString(4));
+       order.setMessage(rs.getString(5));
+       
+       addressForm = addressDao.selectOneAddress(Integer.valueOf(rs.getString(6)));
+       order.setAddress(addressForm);
+       
+       memberForm = memberDao.selectOneMember(Integer.valueOf(rs.getString(7)));
+       if (rs.getString(8).equals("paid")){
+    	   
+    	   order.makePayment();
+    	   
+       }else if(rs.getString(8).equals("shipped")){
+          order.makePayment();
+    	   order.ship();
+       }
+       else if(rs.getString(8).equals("delivered")){
+        order.makePayment();
+         order.ship();
+    	   order.confirmedDelivery();
+       }
+       order.setMember(memberForm);
+
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return order;
+  }
+
+
+public void updateStatusOrder(String number) {
+    try {
+      ps = connection.prepareStatement("update db_order set status = 'paid' where orderNumber=?");
+      ps.setString(1, number);
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+
+  }
+  public void updateStatusOrderShip(String number) {
+    try {
+      ps = connection.prepareStatement("update db_order set status = 'shipped' where orderNumber=?");
+      ps.setString(1, number);
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+
+  }
+  public void updateStatusOrderDeliver(Integer id) {
+    try {
+      ps = connection.prepareStatement("update db_order set status = 'delivered' where id=?");
+      ps.setInt(1, id);
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+
+  }
+
+  public boolean deleteOrder(String number) {
+    try {
+      ps = connection.prepareStatement("delete from db_order where orderNumber=?");
+      ps.setString(1, number);
+      ps.executeUpdate();
+      ps.close();
+      return true;
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+      return false;
+    }
+
+  }
+
+  public List<Order> selectOrderSign(String sign) {
+    List<Order> list = new ArrayList<Order>();
+    Order order = null;
+    Member memberForm = new Member();
+       MemberDao memberDao = new MemberDao();
+        Address addressForm= new Address();
+        AddressDao addressDao = new AddressDao();
+    try {
+      if (sign == null) {
+        ps = connection.prepareStatement("select * from db_order order by id DESC");
+      }
+      else {
+        ps = connection.prepareStatement("select * from db_order where status=? order by id DESC");
+        ps.setString(1, sign);
+      }
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        order = new Order();
+         order.setId(Integer.valueOf(rs.getString(1)));
+       order.setOrderNumber(rs.getString(2));
+       order.setPaymentMethod(rs.getString(3));
+       order.setShipmentMethod(rs.getString(4));
+       order.setMessage(rs.getString(5));
+       
+       addressForm = addressDao.selectOneAddress(Integer.valueOf(rs.getString(6)));
+       order.setAddress(addressForm);
+       
+       memberForm = memberDao.selectOneMember(Integer.valueOf(rs.getString(7)));
+       order.setMember(memberForm);
+       if (rs.getString(8).equals("paid")){
+    	   
+    	   order.makePayment();
+    	  
+       }else if(rs.getString(8).equals("shipped")){
+           order.makePayment();
+    	   order.ship();
+       }
+       else if(rs.getString(8).equals("delivered")){
+        order.makePayment();
+    	   order.ship();
+    	   order.confirmedDelivery();
+       }
+        list.add(order);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+  public List<Order> selectOrderList(){
+	    List<Order> list=new ArrayList<Order>();
+	    Order order = null;
+	     Member memberForm = new Member();
+	       MemberDao memberDao = new MemberDao();
+	       Address addressForm= new Address();
+	        AddressDao addressDao = new AddressDao();
+	   try {
+	     ps = connection.prepareStatement("select * from db_order order by id DESC");
+	    
+	     ResultSet rs = ps.executeQuery();
+	     while (rs.next()) {
+	       order = new Order();
+	       order.setId(Integer.valueOf(rs.getString(1)));
+	       order.setOrderNumber(rs.getString(2));
+	       order.setPaymentMethod(rs.getString(3));
+	       order.setShipmentMethod(rs.getString(4));
+	       order.setMessage(rs.getString(5));
+	        
+	       addressForm = addressDao.selectOneAddress(Integer.valueOf(rs.getString(6)));
+	       order.setAddress(addressForm);
+	      
+	       memberForm = memberDao.selectOneMember(Integer.valueOf(rs.getString(7)));
+	       order.setMember(memberForm);
+	     
+	       if (rs.getString(8).equals("paid")){
+	    	   
+	    	   order.makePayment();
+	    	   
+	       }else if(rs.getString(8).equals("shipped")){
+	    	   order.makePayment();
+	    	   order.ship();
+	    	   System.out.println("ppppp"+order.getStatus());
+	       }
+	       else if(rs.getString(8).equals("delivered")){
+	    	   order.makePayment();
+	    	   order.ship();
+	    	   order.confirmedDelivery();
+	       }
+	       list.add(order);
+
+	     }
+	   }
+	   catch (SQLException ex) {
+		   ex.printStackTrace();
+	   }
+	   return list;
+	  }
+  
+
+  public void insertOrderDetail(Order form) {
+    try {
+      ps = connection.prepareStatement("insert into db_order values (null,?,?,?,?,?,?,?)");
+      ps.setString(1, form.getOrderNumber());    
+      ps.setString(2, form.getPaymentMethod());
+      ps.setString(3, form.getShipmentMethod());
+      ps.setString(4, form.getMessage());
+      ps.setString(5, String.valueOf(form.getAddress().getId()));
+      ps.setString(6,String.valueOf(form.getMember().getId()));
+       ps.setString(7,String.valueOf(form.getStatus()));
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+}
+  
+}

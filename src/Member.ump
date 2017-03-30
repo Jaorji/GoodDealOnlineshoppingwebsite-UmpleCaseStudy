@@ -1,0 +1,18 @@
+
+
+namespace com.ji.Entity;
+use Order.ump;
+use Address.ump;
+use User.ump;
+
+class Member{
+  depend org.apache.struts.action.ActionForm;
+  isA User; 
+  userName = "";
+  profession = "";
+  question = "";
+  answer = "";
+  0..1 -- * Order; 
+  0..1 -- * Address;
+  
+}

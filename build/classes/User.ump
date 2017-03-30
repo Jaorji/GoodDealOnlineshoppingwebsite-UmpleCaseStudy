@@ -1,0 +1,16 @@
+
+
+namespace com.ji.Entity;
+
+external ActionForm{};
+
+class User{
+  depend org.apache.struts.action.ActionForm;
+  isA ActionForm;
+  int id = 0;
+  firstName = "";
+  lastName = "";
+  birthday = "";
+  password = "";  
+  emailAddress = "";
+}

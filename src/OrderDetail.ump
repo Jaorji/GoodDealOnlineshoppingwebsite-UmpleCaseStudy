@@ -1,0 +1,17 @@
+namespace com.ji.Entity;
+
+use Goods.ump;
+use Order.ump;
+external ActionForm{};
+class OrderDetail{
+depend javax.servlet.http.*;
+
+depend org.apache.struts.action.*;
+isA ActionForm;
+
+  int id = 0;
+  orderNumber = "";
+  0..1 --* Goods;
+  Double price = 0.0;
+  Integer  quantity = 0;
+}

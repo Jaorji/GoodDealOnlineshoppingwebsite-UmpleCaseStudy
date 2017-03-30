@@ -1,0 +1,162 @@
+namespace com.ji.Action;
+
+use BrandDao.ump;
+use Brand.ump;
+
+external Action{};
+
+class BrandAction{
+  depend  org.apache.struts.action.ActionMapping;
+  depend org.apache.struts.action.ActionForm;
+  depend javax.servlet.http.HttpServletRequest;
+  depend javax.servlet.http.HttpServletResponse;
+  depend org.apache.struts.action.ActionForward;
+  depend org.apache.struts.action.Action;
+  depend java.util.List;
+  isA Action;
+
+  0..1 -> 1 BrandDao dao;
+  0..1 -> 1 Brand brand;
+  int action;
+  public BrandAction(){}
+  public ActionForward execute(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+    action = Integer.parseInt(request.getParameter("action"));
+    dao = new BrandDao();
+    switch (action) {
+      case 0: {
+        return smallTypeSelect(mapping, form, request, response);
+      }
+      case 2: {
+        return smallTypeInsert(mapping, form, request, response); 
+      }
+      case 3: {
+        return smallTypeDelete(mapping, form, request, response); 
+      }
+      case 4: {
+        return smallTypeSelectOne(mapping, form, request, response); 
+      }
+      case 5: {
+        return smallTypeUpdate(mapping, form, request, response); 
+      }
+      case 6: {
+        return smallTypeSelectBigId(mapping, form, request, response); 
+      }
+    }
+
+
+    throw new java.lang.UnsupportedOperationException(
+        "Method $execute() not yet implemented.");
+  }
+
+ 
+  public ActionForward smallTypeSelectBigId(ActionMapping mapping,
+                                            ActionForm form,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) {
+    List<Brand> list = dao.selectOneBigId(Integer.valueOf(request.getParameter("typeId")));
+    int pageNumber = list.size(); 
+    int maxPage = pageNumber; 
+    String number = request.getParameter("i");
+    if (maxPage % 6 == 0) {
+      maxPage = maxPage / 6;
+    }
+    else {
+      maxPage = maxPage / 6 + 1;
+    }
+    if (number == null) {
+      number = "0";
+    }
+    request.setAttribute("number", String.valueOf(number));
+    request.setAttribute("maxPage", String.valueOf(maxPage));
+    request.setAttribute("pageNumber", String.valueOf(pageNumber));
+    request.setAttribute("list", list);
+    return mapping.findForward("smallTypeSelect");
+  }
+
+
+  public ActionForward smallTypeUpdate(ActionMapping mapping,
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+    Type typeForm = new Type();
+    Brand smallTypeForm = new Brand();
+    TypeDao typeDao = new TypeDao();
+    typeForm = typeDao.selectOneType(Integer.valueOf(request.getParameter("typeId")));
+    smallTypeForm.setId(Integer.valueOf(request.getParameter("id")));
+    smallTypeForm.setName(request.getParameter("name"));
+    smallTypeForm.setType(typeForm);
+    dao.updateSmall(smallTypeForm);
+    request.setAttribute("success", "Update sccessfully");
+    return mapping.findForward("smallTypeOperation");
+  }
+
+
+  public ActionForward smallTypeSelectOne(ActionMapping mapping,
+                                          ActionForm form,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) {
+    request.setAttribute("small",
+                         dao.selectOneBig(Integer.valueOf(request.
+        getParameter("id"))));
+    return mapping.findForward("smallTypeSelectOne");
+  }
+
+
+  public ActionForward smallTypeDelete(ActionMapping mapping,
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+
+    if (dao.deleteSmall(Integer.valueOf(request.getParameter("id")))) {
+      request.setAttribute("result", "Brand Deleted");
+    }else {
+      request.setAttribute("result", "can not delete");
+    }
+    return mapping.findForward("smallTypeOperation");
+  }
+
+
+  public ActionForward smallTypeInsert(ActionMapping mapping,
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+     Type typeForm = new Type();
+    Brand smallTypeForm=new Brand();
+    
+    TypeDao typeDao = new TypeDao();
+    typeForm = typeDao.selectOneType(Integer.valueOf(request.getParameter("typeId")));
+    smallTypeForm.setName(request.getParameter("name"));
+    smallTypeForm.setType(typeForm);
+    dao.insertSmall(smallTypeForm);
+    request.setAttribute("result", "Inset Brand");
+    return mapping.findForward("smallTypeOperation");
+  }
+
+
+  public ActionForward smallTypeSelect(ActionMapping mapping,
+                                       ActionForm form,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+    List<Brand> list = dao.selectSmall();
+    int pageNumber = list.size();
+    int maxPage = pageNumber; 
+    String number = request.getParameter("i");
+    if (maxPage % 6 == 0) {
+      maxPage = maxPage / 6;
+    }
+    else {
+      maxPage = maxPage / 6 + 1;
+    }
+    if (number == null) {
+      number = "0";
+    }
+    request.setAttribute("number", String.valueOf(number));
+    request.setAttribute("maxPage", String.valueOf(maxPage));
+    request.setAttribute("pageNumber", String.valueOf(pageNumber));
+    request.setAttribute("list", list);
+    return mapping.findForward("smallTypeSelect");
+  }
+}

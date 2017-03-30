@@ -1,0 +1,18 @@
+namespace com.ji.Entity;
+
+use Goods.ump;
+use Brand.ump;
+external ActionForm{};
+class Type{
+  depend org.apache.struts.action.ActionForm;
+  depend org.apache.struts.action.ActionErrors;
+  depend org.apache.struts.action.ActionMapping;
+  depend javax.servlet.http.HttpServletRequest;
+  depend org.apache.struts.upload.FormFile;
+  isA ActionForm;
+
+  Integer id=0;
+  name = "";
+  0..1 -- * Brand;
+  0..1 -- * Goods;
+}

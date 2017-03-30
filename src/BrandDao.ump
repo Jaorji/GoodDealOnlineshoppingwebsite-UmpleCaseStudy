@@ -1,0 +1,168 @@
+namespace com.ji.DAO;
+
+use JDBConnection.ump;
+use Brand.ump;
+class BrandDao{
+  depend java.sql.*;
+  depend java.util.*;
+
+  0..1 -> 1 JDBConnection jdbc;
+  0..1 -> 1 Brand brand;
+
+  PreparedStatement ps;
+  Connection connection;
+  public BrandDao() {
+    jdbc = new JDBConnection(connection);
+    connection = jdbc.getConnection();
+  }
+	
+  public List<Brand> selectOneBigId(Integer bigId) {
+    List<Brand> list = new ArrayList<Brand>();
+	Brand small = null;
+	Type typeForm = new Type();
+	TypeDao typeDao = new TypeDao();
+	    
+	  try {
+	    this.ps = connection.prepareStatement("select * from db_brand where typeId=?");
+		ps.setString(1, bigId.toString());
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+		  small = new Brand();
+		  small.setId(Integer.valueOf(rs.getString(1)));
+		  small.setName(rs.getString(2));
+		  typeForm = typeDao.selectOneType(Integer.valueOf(rs.getString(3)));
+		  small.setType(typeForm);
+				
+		  list.add(small);
+		}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return list;
+	}
+    public Brand selectOneBrand(Integer id) {
+		Brand small = null;
+		Type typeForm = new Type();
+	    TypeDao typeDao = new TypeDao();
+	    
+		try {
+			this.ps = connection
+					.prepareStatement("select * from db_brand where id=?");
+			ps.setString(1, id.toString());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				small = new Brand();
+				small.setId(Integer.valueOf(rs.getString(1)));
+				small.setName(rs.getString(2));
+				typeForm = typeDao.selectOneType(Integer.valueOf(rs.getString(3)));
+				small.setType(typeForm);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return small;
+	}
+	
+	public String selectName(Integer id) {
+		String name = null;
+		try {
+			this.ps = connection
+					.prepareStatement("select * from db_brand where id=?");
+			ps.setString(1, id.toString());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				name = rs.getString("name");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return name;
+	}
+
+
+	public boolean deleteSmall(Integer id) {
+		 try {
+			ps = connection.prepareStatement("delete from db_brand where id=?");
+			ps.setString(1, id.toString());
+			ps.executeUpdate();
+			ps.close();
+			return true;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+
+	public void updateSmall(Brand form) {
+	 try {
+			ps = connection.prepareStatement("update db_brand set name=?,typeId=? where id=?");
+			ps.setString(1, form.getName());
+			ps.setInt(2, form.getType().getId());			
+			ps.setString(3, String.valueOf(form.getId()));
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+
+	public void insertSmall(Brand form) {
+	  try {
+			ps = connection.prepareStatement("insert into db_brand values (null,?,?)");
+			ps.setString(1, form.getName());
+			ps.setInt(2, form.getType().getId());			
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public Brand selectOneBig(Integer id) {
+		 Brand small = null;
+    Type typeForm = new Type();
+    TypeDao typeDao = new TypeDao();
+		try {
+			this.ps = connection
+					.prepareStatement("select * from db_brand where id=?");
+			ps.setString(1, id.toString());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				small = new Brand();
+				small.setId(Integer.valueOf(rs.getString(1)));
+				small.setName(rs.getString(2));
+				typeForm = typeDao.selectOneType(Integer.valueOf(rs.getString(3)));
+				small.setType(typeForm);
+				
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return small;
+	}
+
+
+	public List<Brand> selectSmall() {
+	 List<Brand> list = new ArrayList<Brand>();
+			Brand small = null;
+		Type typeForm = new Type();
+	    TypeDao typeDao = new TypeDao();
+		try {
+			this.ps = connection.prepareStatement("select * from db_brand order by id DESC");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				small = new Brand();
+				small.setId(Integer.valueOf(rs.getString(1)));
+				small.setName(rs.getString(2));
+				typeForm = typeDao.selectOneType(Integer.valueOf(rs.getString(3)));
+				small.setType(typeForm);
+				
+				list.add(small);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return list;
+	}
+}

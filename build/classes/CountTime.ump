@@ -1,0 +1,13 @@
+namespace com.ji.tool;
+
+class CountTime{
+  depend java.util.Date;
+  depend java.text.DateFormat;
+
+
+  public String currentlyTime() {
+	Date date = new Date();
+	DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
+	return dateFormat.format(date);
+	}
+}

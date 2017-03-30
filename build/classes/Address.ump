@@ -1,0 +1,14 @@
+namespace com.ji.Entity;
+
+
+class Address{
+
+  int id = 0;
+  country = "";
+  province = "";
+  city = "";
+  streetNumber = "";
+  streetName = "";
+  postalCode = "";
+  telephone = "";
+}

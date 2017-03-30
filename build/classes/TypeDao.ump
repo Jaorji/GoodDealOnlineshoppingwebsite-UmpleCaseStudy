@@ -1,0 +1,100 @@
+namespace com.ji.DAO;
+
+use Type.ump;
+use JDBConnection.ump;
+
+class TypeDao{
+depend  java.sql.*;
+depend  java.util.*;
+0..1 -> 1 JDBConnection jdbc;
+0..1 -> 1 Type type;
+
+PreparedStatement ps;
+Connection connection;
+public TypeDao() {
+    jdbc = new JDBConnection(connection);
+    connection = jdbc.getConnection();
+  }
+  
+
+  public String selectName(Integer id) {
+    String name = null;
+    try {
+      this.ps = connection.prepareStatement("select * from db_type where id=?");
+      ps.setString(1, id.toString());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        name = rs.getString("name");
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return name;
+  }
+
+  public boolean deleteBig(Integer id) {
+    try {
+      ps = connection.prepareStatement("delete from db_type where id=?");
+      ps.setString(1, id.toString());
+      ps.executeUpdate();
+      ps.close();
+      return true;
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+      return false;
+    }
+  }
+
+
+  public void insertBig(String name) {
+    try {
+      ps = connection.prepareStatement("insert into db_type values (null,?)");
+      ps.setString(1, name);
+      ps.executeUpdate();
+      ps.close();
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+  }
+
+  public List<Type> selectBig() {
+    List<Type> list = new ArrayList<Type>();
+    Type big = null;
+    try {
+      this.ps = connection.prepareStatement("select * from db_type order by id DESC");
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        big = new Type();
+        big.setId(Integer.valueOf(rs.getString(1)));
+        big.setName(rs.getString(2));
+        list.add(big);
+      }
+    }
+    catch (SQLException ex) {
+    	ex.printStackTrace();
+    }
+    return list;
+  }
+   public Type selectOneType(Integer id){
+
+		    Type type = null;
+		    try {
+		      ps = connection.prepareStatement("select * from db_type where id=?");
+		      ps.setInt(1, id.intValue());
+		      ResultSet rs = ps.executeQuery();
+		      while (rs.next()) {
+		        type = new Type();
+		        type.setId(Integer.valueOf(rs.getString(1)));
+		        type.setName(rs.getString(2));
+		      }
+		    }
+		    catch (SQLException ex) {
+		    	ex.printStackTrace();
+		    }
+		    return type;
+		  }
+
+}

@@ -1,0 +1,20 @@
+namespace com.ji.tool;
+
+external RequestProcessor{};
+class SelfRequestProcessor{
+depend java.io.UnsupportedEncodingException;
+depend javax.servlet.http.HttpServletRequest;
+depend javax.servlet.http.HttpServletResponse;
+depend org.apache.struts.action.RequestProcessor;
+isA RequestProcessor;
+	protected boolean processPreprocess(HttpServletRequest request,
+			HttpServletResponse response) {
+		super.processPreprocess(request, response);
+		try {
+			request.setCharacterEncoding("gb2312");
+		} catch (UnsupportedEncodingException ex) {
+			ex.printStackTrace();
+		}
+		return true;
+	}
+}

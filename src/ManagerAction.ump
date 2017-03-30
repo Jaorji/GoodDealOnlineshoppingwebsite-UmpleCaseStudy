@@ -1,0 +1,143 @@
+namespace com.ji.Action;
+
+use Manager.ump;
+use ManagerDao.ump;
+external Action{};
+class ManagerAction{
+
+depend org.apache.struts.action.*;
+depend javax.servlet.http.*;
+depend java.util.*;
+isA Action;
+0..1 -> 1 Manager managerForm;
+0..1 -> 1 ManagerDao dao;
+
+       int action;
+public ManagerAction(){}
+
+
+
+ public ActionForward execute(ActionMapping mapping,
+                               ActionForm form,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+    dao = new ManagerDao();
+    action = Integer.parseInt(request.getParameter("action"));
+    switch (action) {
+      case 0: {
+        return managerCheck(mapping, form, request, response); 
+        }
+      case 1: {
+        return managerSelect(mapping, form, request, response); 
+      }
+      case 3: {
+        return managerInsert(mapping, form, request, response); 
+      }
+      case 4: {
+        return managerDelete(mapping, form, request, response); 
+      }
+      case 8: {
+        return managerUpdatePassword(mapping, form, request, response); 
+      }
+    }
+    throw new java.lang.UnsupportedOperationException(
+        "Method $execute() not yet implemented.");
+  }
+
+
+  public ActionForward managerUpdatePassword(ActionMapping mapping,
+                                             ActionForm form,
+                                             HttpServletRequest request,
+                                             HttpServletResponse response) {
+    Manager managerForm = (Manager) form;
+ 
+    managerForm.setAccountName(request.getParameter("accountName"));
+    managerForm.setPassword(request.getParameter("password"));
+    dao.updateManagerPassword(managerForm);
+    request.setAttribute("reslut", "password changed");
+    return mapping.findForward("managerUpdatePassword");
+  }
+
+
+
+
+  public ActionForward managerDelete(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    dao.deleteManager(Integer.valueOf(request.getParameter("id")));
+    request.setAttribute("reslut", "manager deleted");
+    return managerSelect(mapping,form,request,response);
+  }
+
+  public ActionForward managerInsert(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    Manager managerForm = (Manager) form;
+    managerForm.setAccountName(request.getParameter("accountName"));
+     managerForm.setPassword(request.getParameter("password"));
+      managerForm.setFirstName(request.getParameter("firstName"));
+       managerForm.setLastName(request.getParameter("lastName"));
+        managerForm.setBirthday(request.getParameter("birthday"));
+         managerForm.setEmailAddress(request.getParameter("emailAddress"));
+
+    Manager manager = dao.selectOne(managerForm.getAccountName());
+    if (manager == null || manager.equals("")) {
+       dao.insertManager(managerForm);
+       return managerSelect(mapping,form,request,response);
+    }else {
+      request.setAttribute("reslut", "Insert Manager");
+      return mapping.findForward("managerInsert");
+    }
+  }
+
+
+
+  public ActionForward managerSelect(ActionMapping mapping,
+                                     ActionForm form,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+    List<Manager> list = dao.selectManager();
+    int pageNumber = list.size(); 
+    int maxPage = pageNumber; 
+    String number = request.getParameter("i");
+    if (maxPage % 7 == 0) {
+      maxPage = maxPage / 7;
+    }
+    else {
+      maxPage = maxPage / 7 + 1;
+    }
+    if (number == null) {
+      number = "0";
+    }
+    request.setAttribute("number", String.valueOf(number));
+    request.setAttribute("maxPage", String.valueOf(maxPage));
+    request.setAttribute("pageNumber", String.valueOf(pageNumber));
+
+    request.setAttribute("list", list);
+    return mapping.findForward("managerSelect");
+  }
+
+
+  public ActionForward managerCheck(ActionMapping mapping,
+                                    ActionForm form,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) {
+    String account =request.getParameter("accountName");
+    Manager managerForm= dao.selectOne(account);
+    if (managerForm == null) {
+      request.setAttribute("result", "no such manager exist!");
+      return mapping.findForward("checkResult");
+    }
+    else if (!managerForm.getPassword().equals(request.getParameter("password"))) {
+      request.setAttribute("result", "password worry");
+      return mapping.findForward("checkResult");
+    } else {
+      request.setAttribute("manager", managerForm);
+      return mapping.findForward("checkResult");
+    }
+    }
+
+}
