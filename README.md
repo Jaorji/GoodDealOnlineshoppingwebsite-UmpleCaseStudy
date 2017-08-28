@@ -9,48 +9,22 @@ Umple has also been found to help students learn UML faster in the classroom.
 
 # What does the project's requirement?
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
-Member Part:
-Requirement ID
-Title
-Description
-RQ001
-Visitors of the website
-Any person should be able to visit the website
-RQ002
-Registration
-A visitor must register in the system to be able to explore details of goods
-RQ003
-Log in 
-A member must be able to log in to the system by his/her user name and password
-RQ004
-Log out
-A member should be able to log out from the system
-RQ005
-Recovering Password
-A member must be able to recover his/her user name and password through answering some questions
-RQ006
-Adding goods to the shopping cart
-A member must be able to add goods to his/her shopping cart.
-RQ007
-Modifying shopping cart
-A member must be able to modify his/her shopping cart
-RQ008
-Making a payment
-A member must be able to make a payment in the system for goods in his/her shopping cart
-RQ009
-Checking shipping status of an order
-A member must be able to check shipping status of his/her order.
-RQ010
-Checking details of an order
-A member must be able to check details of goods in his/her order
-RQ011
-Checking profile
-A member must be able to check his/her profile. 
-RQ012
-Modifying profile
-A member must be able to   modify his/her profile
+| Requirement ID  | Title | Description |                    
+| ------------- | ------------- | 
+| RQ001  | Visitors of the website  | Any person should be able to visit the website|
+| RQ002 | Registration  | A visitor must register in the system to be able to explore details of goods|
+|RQ003 | Log in | A member must be able to log in to the system by his/her user name and password |
+|RQ004 | Log out | A member should be able to log out from the system |
+|RQ005 |Recovering Password |A member must be able to recover his/her user name and password through answering some questions|
+|RQ006 |Adding goods to the shopping cart |A member must be able to add goods to his/her shopping cart|
+|RQ007|Modifying shopping cart|A member must be able to modify his/her shopping cart|
+|RQ008|Making a payment|A member must be able to make a payment in the system for goods in his/her shopping cart|
+|RQ009|Checking shipping status of an order|A member must be able to check shipping status of his/her order|
+|RQ010|Checking details of an order|A member must be able to check details of goods in his/her order|
+|RQ011|Checking profile|A member must be able to check his/her profile| 
+|RQ012|Modifying profile|A member must be able to   modify his/her profile|
 
-RQ001: Visitors of the website 
+|
 Visitors can look through the goods’ basic information, but they cannot see the detail.
 RQ002:Registration
 Visitors need register to be a member of this website in order to buy goods. When a visitor register, he needs input his member user name, password, confirm password, birthday, profession, email address, a question in case he loses the password and the answer related to the question.
