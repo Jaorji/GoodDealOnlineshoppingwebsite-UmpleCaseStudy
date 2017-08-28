@@ -11,7 +11,8 @@ Umple has also been found to help students learn UML faster in the classroom.
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
 |语法|效果|
 |----|-----|
-|`*斜体1*`|*斜体1*|
+|`[我的简介](/example/profile.md)`|[我的简介](/example/profile.md)|
+|`[Book](./Book)`|[Book](/Book)|
 
 
 Visitors can look through the goods’ basic information, but they cannot see the detail.
