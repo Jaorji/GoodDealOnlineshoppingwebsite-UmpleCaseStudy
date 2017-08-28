@@ -9,8 +9,10 @@ Umple has also been found to help students learn UML faster in the classroom.
 
 # What does the project's requirement?
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
-| Requirement ID  | Title | Description |                    
-| ------------- | ------------- | ------------- | 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 
 Visitors can look through the goods’ basic information, but they cannot see the detail.
