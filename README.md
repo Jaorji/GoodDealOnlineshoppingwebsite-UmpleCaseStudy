@@ -7,7 +7,7 @@ Umple is a modeling tool and programming language family to enable what we call 
 Umple is an open source project, so details will evolve. However, it is ready to be used for real systems. In fact the Umple compiler itself is written in Umple. Any Java, C++ or PHP project could use Umple. We have found the resulting code to be more readable and have many fewer lines. This is because Umple means you can avoid having to code a lot of 'boilerplate' code that would be needed to implement associations and attributes, a system based on Umple should also be less bug-prone.
 Umple has also been found to help students learn UML faster in the classroom.
 
-# What does the project's requirement?
+# What's the project's requirement?
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
 
 
