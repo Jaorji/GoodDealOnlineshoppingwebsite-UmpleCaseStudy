@@ -9,16 +9,12 @@ Umple has also been found to help students learn UML faster in the classroom.
 
 # What does the project's requirement?
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
-|语法|效果|
-|----|-----|
-|`[我的简介](/example/profile.md)`|[我的简介](/example/profile.md)|
-|`[Book](./Book)`|[Book](/Book)|
 
 
 Visitors can look through the goods’ basic information, but they cannot see the detail.
-RQ002:Registration
-Visitors need register to be a member of this website in order to buy goods. When a visitor register, he needs input his member user name, password, confirm password, birthday, profession, email address, a question in case he loses the password and the answer related to the question.
-RQ003: Log in
+ RQ002:Registration
+ Visitors need register to be a member of this website in order to buy goods. When a visitor register, he needs input his member user name, password, confirm password, birthday, profession, email address, a question in case he loses the password and the answer related to the question.
+ RQ003: Log in
 Members need log in to have access to this website. When he logs in, he needs input his user name and password. 
 RQ004: Log out
 If members want to leave the website, they can click the log out button and there will be a pop out window confirmation.
