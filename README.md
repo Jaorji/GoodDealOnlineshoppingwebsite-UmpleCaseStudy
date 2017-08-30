@@ -69,11 +69,11 @@ The manager can check the detail information of members and can delete them.
 * RQ015: Managing goods
 The manager can see the detail information of goods and can delete or add goods, at the meantime can decide if it is on sale price or not. When add goods information, the manager need choose the type and brand, add the name of the goods and manufacturers, upload the pictures, set the price and add description.
 The sale price should be defaulted to 0 for all the new products, but if the manager want to set sale price, the manager need check the detail of the goods and set it as on sale and then give it a sale price.
-RQ016: Managing types
+* RQ016: Managing types
 The manager can check the type and can delete or add the type.
-•	RQ017: Managing brands
+*	RQ017: Managing brands
 The manager can check the brand and can delete or add the brand.
-RQ018: Managing orders
+* RQ018: Managing orders
 The manager can check all the orders’ information and can check every order’s detail. The manager can decide if the order is shipped or not and can delete the order.
 UML design:
 
