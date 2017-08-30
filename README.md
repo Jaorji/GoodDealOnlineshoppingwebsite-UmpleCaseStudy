@@ -49,7 +49,7 @@ Using Umple to design and develop an online shopping website. This website is di
 * RQ011:Check member’s profile  
   A member can check his profile, all information is what he provided when he registered. 
 * RQ012：Modifying profile  
-  A member can do some changes to his profile and then save it.
+  A member can do some changes to his profile and then save it.  
   Manager Part:  
   The website has a manager side. There should be one admin manager at least. Other managers can be added to the system. Every manager should use their own user name and password to log in.
 
