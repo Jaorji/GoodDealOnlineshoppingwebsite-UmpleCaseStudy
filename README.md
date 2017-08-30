@@ -11,6 +11,7 @@ Umple has also been found to help students learn UML faster in the classroom.
 Using Umple to design and develop an online shopping website. This website is divided into two parts: Member Part and Manager Part.
 
 | Requirement ID | Title | Description |
+| -------------- | ----- | ----------- |
 |RQ001 | Visitors of the website  | Any person should be able to visit the website|
 |RQ002 | Registration  | A visitor must register in the system to be able to explore details of goods|
 |RQ003 | Log in | A member must be able to log in to the system by his/her user name and password |
