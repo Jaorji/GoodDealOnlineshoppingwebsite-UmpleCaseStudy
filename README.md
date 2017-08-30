@@ -26,29 +26,29 @@ Using Umple to design and develop an online shopping website. This website is di
 |RQ012 | Modifying profile|A member must be able to   modify his/her profile|
 
 
-
-Visitors can look through the goods’ basic information, but they cannot see the detail.
- RQ002:Registration
+* RQ001: Visitors of the website 
+  Visitors can look through the goods’ basic information, but they cannot see the detail.
+* RQ002:Registration
  Visitors need register to be a member of this website in order to buy goods. When a visitor register, he needs input his member user name, password, confirm password, birthday, profession, email address, a question in case he loses the password and the answer related to the question.
- RQ003: Log in
+* RQ003: Log in
 Members need log in to have access to this website. When he logs in, he needs input his user name and password. 
-RQ004: Log out
+* RQ004: Log out
 If members want to leave the website, they can click the log out button and there will be a pop out window confirmation.
-RQ005: Recovering Password
+* RQ005: Recovering Password
 If a member forgets his password, he can visit recovering password page. In this page the member needs input his user name and get his questions which he set when he registered. If he forget his answer, he need send email to the manager of this website.
-RQ006: Adding goods to the shopping cart
+* RQ006: Adding goods to the shopping cart
 If a member is interested in some goods and wants to buy them, he can add them to his cart. They can also specify the quantity as well.
-RQ007：Modifying shopping cart
+* RQ007：Modifying shopping cart
 The member can check his cart and make some changes. He can change the quantity of goods he wants to buy, he can clear the cart, he can choose to continue shopping, or he can make a payment.
-RQ008: Making a payment
+* RQ008: Making a payment
 When the cart is ready, a member can choose to make a payment. There will be an order code shown automatically. At the meantime, a member should provide the mail address, email address, and contact number. Then he needs to choose the payment method. There will be three payment method: Visa, Master card, and debit. There will be three post method: UPS, Canada post, EMS. Members can leave a message for each order.
-RQ009: Checking shipping status of an order
+* RQ009: Checking shipping status of an order
 A member can check if his order is shipped or not. 
-RQ010 : Checking details of an order
+* RQ010 : Checking details of an order
 A member can see the order he did. And he can choose to see the detail of the order. 
-RQ011:Check member’s profile
+* RQ011:Check member’s profile
 A member can check his profile, all information is what he provided when he registered. 
-RQ012：Modifying profile
+* RQ012：Modifying profile
 A member can do some changes to his profile and then save it.
 Manager Part:
 The website has a manager side. There should be one admin manager at least. Other managers can be added to the system. Every manager should use their own user name and password to log in.
@@ -62,11 +62,11 @@ The website has a manager side. There should be one admin manager at least. Othe
 | RQ017 | Managing brands | A manager must be able to modify brands |
 | RQ018 | Managing orders | A manager must be able to modify orders |
 
-RQ013: Managing admin users 
+* RQ013: Managing admin users 
 The manager can add manager and delete manager. When he adds a new manager, he should set his name, user name, and password.
-RQ014：Managing members
+* RQ014：Managing members
 The manager can check the detail information of members and can delete them.
-RQ015: Managing goods
+* RQ015: Managing goods
 The manager can see the detail information of goods and can delete or add goods, at the meantime can decide if it is on sale price or not. When add goods information, the manager need choose the type and brand, add the name of the goods and manufacturers, upload the pictures, set the price and add description.
 The sale price should be defaulted to 0 for all the new products, but if the manager want to set sale price, the manager need check the detail of the goods and set it as on sale and then give it a sale price.
 RQ016: Managing types
