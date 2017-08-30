@@ -62,7 +62,7 @@ Using Umple to design and develop an online shopping website. This website is di
 | RQ017 | Managing brands | A manager must be able to modify brands |
 | RQ018 | Managing orders | A manager must be able to modify orders |
 
-* RQ013: Managing admin users 
+* RQ013: Managing admin users   
   The manager can add manager and delete manager. When he adds a new manager, he should set his name, user name, and password.
 * RQ014：Managing members
   The manager can check the detail information of members and can delete them.
